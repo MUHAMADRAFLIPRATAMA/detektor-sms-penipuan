@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Detektor Pesan Penipuan</title>
+  <style>
+    :root{--blue:#2563eb;--ink:#172033;--muted:#64748b;--line:#dbe3ef;--bg:#f4f7fb}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(135deg,#eef4ff,#f8fafc);font-family:Arial,sans-serif;color:var(--ink)}
+    .shell{max-width:900px;margin:48px auto;padding:20px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 18px 45px #1e3a5f18}
+    .eyebrow{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:1.5px}.title{font-size:clamp(28px,5vw,46px);margin:10px 0}.desc{color:var(--muted);line-height:1.6}
+    label{display:block;font-weight:700;margin:26px 0 9px}textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:14px;padding:16px;font:16px Arial;resize:vertical;outline:none}textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2563eb22}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:0;border-radius:10px;padding:13px 20px;font-weight:700;cursor:pointer}.check{background:var(--blue);color:white}.sample{background:#eaf1ff;color:#1d4ed8}.clear{background:#eef2f7;color:#475569}
+    .result{display:none;margin-top:25px;padding:20px;border-radius:14px}.result.show{display:block}.danger{background:#fee2e2;color:#991b1b}.safe{background:#dcfce7;color:#166534}.result h2{margin:0 0 8px}.score{font-size:30px;font-weight:800;margin:8px 0}.note{font-size:13px;margin-top:25px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="shell"><section class="card">
+    <div class="eyebrow">MACHINE LEARNING DEMO</div>
+    <h1 class="title">Detektor Pesan Penipuan</h1>
+    <p class="desc">Demo antarmuka untuk memeriksa pesan SMS atau WhatsApp. Masukkan pesan, lalu tekan tombol pemeriksaan.</p>
+    <label for="message">Isi pesan</label>
+    <textarea id="message" placeholder="Contoh: Selamat Anda memenangkan hadiah Rp50 juta..."></textarea>
+    <div class="actions"><button class="check" id="check">Periksa Pesan</button><button class="sample" id="fillScam">Contoh Penipuan</button><button class="clear" id="clear">Bersihkan</button></div>
+    <div id="result" class="result" aria-live="polite"></div>
+    <p class="note">Catatan demo: file HTML ini berdiri sendiri. Untuk prediksi model Python sebenarnya, gunakan <b>web_app.py</b>.</p>
+  </section></main>
+<script>
+const message=document.querySelector('#message'), result=document.querySelector('#result');
+const scamWords=['hadiah','menang','undian','verifikasi','blokir','diblokir','otp','pinjaman','transfer','klik link','bonus','klaim','rekening','akun bank','investasi'];
+function checkMessage(){
+  const text=message.value.trim().toLowerCase();
+  if(!text){result.className='result show danger';result.innerHTML='<h2>Pesan belum diisi</h2><p>Masukkan pesan terlebih dahulu.</p>';return}
+  const hits=scamWords.filter(word=>text.includes(word));
+  const scam=hits.length>0;
+  const confidence=Math.min(96, scam ? 64+hits.length*6 : 82);
+  result.className='result show '+(scam?'danger':'safe');
+  result.innerHTML=scam?`<h2>Hasil: PENIPUAN</h2><div class="score">${confidence}%</div><p>Ditemukan pola mencurigakan: <b>${hits.join(', ')}</b></p>`:`<h2>Hasil: NORMAL</h2><div class="score">${confidence}%</div><p>Tidak ditemukan kata kunci penipuan pada pemeriksaan demo.</p>`;
+}
+document.querySelector('#check').onclick=checkMessage;
+document.querySelector('#fillScam').onclick=()=>{message.value='Selamat Anda memenangkan hadiah Rp50 juta, klik link ini sekarang untuk klaim hadiah';checkMessage()};
+document.querySelector('#clear').onclick=()=>{message.value='';result.className='result';result.innerHTML='';message.focus()};
+</script>
+</body></html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hasil Detektor Pesan Penipuan</title>
+    <style>
+      body {
+        max-width: 1000px;
+        margin: 32px auto;
+        padding: 0 16px;
+        color: #222;
+        font-family: Arial, sans-serif;
+      }
+
+      .cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .card {
+        min-width: 160px;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .value {
+        color: #176b3a;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      img {
+        max-width: 100%;
+        border: 1px solid #ddd;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px 14px;
+        border: 1px solid #bbb;
+        text-align: left;
+      }
+
+      th {
+        background: #eaf2f8;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hasil Machine Learning Detektor Pesan Penipuan</h1>
+    <p>Model: TF-IDF + Logistic Regression</p>
+
+    <section class="cards" aria-label="Ringkasan hasil">
+      <div class="card">
+        Total data
+        <div class="value">6833</div>
+      </div>
+      <div class="card">
+        Data testing
+        <div class="value">1367</div>
+      </div>
+      <div class="card">
+        Accuracy
+        <div class="value">97.95%</div>
+      </div>
+      <div class="card">
+        F1 penipuan
+        <div class="value">95.22%</div>
+      </div>
+    </section>
+
+    <h2>Grafik Evaluasi</h2>
+    <img src="hasil_grafik.png" alt="Grafik evaluasi model">
+
+    <h2>Classification Report</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Kelas</th>
+          <th scope="col">Precision</th>
+          <th scope="col">Recall</th>
+          <th scope="col">F1-score</th>
+          <th scope="col">Support</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>normal</td>
+          <td>99.53%</td>
+          <td>97.88%</td>
+          <td>98.70%</td>
+          <td>1083</td>
+        </tr>
+        <tr>
+          <td>penipuan</td>
+          <td>92.38%</td>
+          <td>98.24%</td>
+          <td>95.22%</td>
+          <td>284</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Kesimpulan</h2>
+    <p>
+      Model berhasil membedakan pesan normal dan penipuan pada data pengujian.
+      Hasil ini berasal dari dataset publik.
+    </p>
+  </body>
+</html>
